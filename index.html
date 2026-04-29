@@ -404,7 +404,7 @@
         }
 
         function spawnPlayer() {
-            player = new Tank(240, 480, DIR.UP, 'player');
+            player = new Tank(240, 468, DIR.UP, 'player');
             tanks.push(player);
         }
 
@@ -464,6 +464,14 @@
             if (enemySpawnTimer > 120 && activeEnemies < 4 && spawnedEnemies < maxEnemies) {
                 spawnEnemy();
                 enemySpawnTimer = 0;
+            }
+
+            if (player && player.active) {
+                if (keys['ArrowUp']) { player.dir = DIR.UP; player.move(); }
+                else if (keys['ArrowDown']) { player.dir = DIR.DOWN; player.move(); }
+                else if (keys['ArrowLeft']) { player.dir = DIR.LEFT; player.move(); }
+                else if (keys['ArrowRight']) { player.dir = DIR.RIGHT; player.move(); }
+                if (keys['Space']) player.shoot();
             }
 
             for (const t of tanks) t.update();
@@ -541,12 +549,7 @@
                 if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space','KeyP'].includes(e.code)) {
                     e.preventDefault();
                 }
-                if (e.code === 'ArrowUp') { player.dir = DIR.UP; player.move(); }
-                else if (e.code === 'ArrowDown') { player.dir = DIR.DOWN; player.move(); }
-                else if (e.code === 'ArrowLeft') { player.dir = DIR.LEFT; player.move(); }
-                else if (e.code === 'ArrowRight') { player.dir = DIR.RIGHT; player.move(); }
-                else if (e.code === 'Space') player.shoot();
-                else if (e.code === 'KeyP') gameState = 'paused';
+                if (e.code === 'KeyP') gameState = 'paused';
             } else if (gameState === 'paused') {
                 if (e.code === 'KeyP') gameState = 'playing';
             }
